@@ -28,11 +28,15 @@ b) Please note down if the N and/or V flags are set in the APSR register. And ex
     N and V flags are both set, which I was not expecting. Maybe these register status bits are treated differently with unsigned ints - treated as ints by the CPU and unsigned elsewhere?
     I reran the condition a few times and got the same result each time. 
 
+    After reading about this, it looks like the CPU does not distinguish between signed and unsigned ints, so my hypothesis was correct. The N and V flags are set, because if it were a signed int, it would have overflowed and been negative. And the C and Z registers are not set, because it is not zero and there was not a carry from the last operation on the leftmost bit.
+
 4. Change the “counter” variable type in your code to “unsigned”. Inject the values “0xFFFFFFFF” then step thru the program to increment the “counter” once:
 a) What is the value of “counter” in the “Locals” window after incrementing for each value?
     0
 b) Please note down if the N and/or V flags are set in the APSR register. And explain why.
     Neither N nor V are set. Z and C are both set. Again this result is surprising to me. I assume it is the same reason as above, where unsigned ints are treated the same as regular ints by the CPU, but translated differently in different contexts.
+
+    Same as with the above answer, this is expected due to the lack of distinction between signed and unsigned ints at the CPU level. The Z and C flags are set because it carried over the last bit (C) and the result was a zero (Z) - in a signed integer. It's up to us and the compiler, not the CPU, to know the difference between signed and unsigned ints.
 
 5. Move the “counter’ variable outside of main (at the top of the file):
 a) What is the scope of the variable “counter”?
