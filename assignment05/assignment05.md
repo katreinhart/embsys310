@@ -16,5 +16,17 @@ a. First, it moves the number #1 into R0, then stores the value from R0 (#1) int
 b.  R0 contains 0x200003FC and R1 contains 0x200003F8.
 c. ![stack](./stack.png)
 
-2.
+2. ![term](./terminal.png)
 
+3. 
+```c
+#if 1 
+    // testing swapCharsAsm
+    char1 = 'A';
+    char2 = 'B';
+    
+    swapCharsAsm(char1, char2);
+    assert('B' == char1);
+    assert('A' == char2);
+#endif
+```
