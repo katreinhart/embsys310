@@ -1,11 +1,10 @@
 /*******************************************************************************
-File name       : swapCharsAsm.s
-Description     : Assembly language function for division
+File name       : delay.s
+Description     : Assembly language function for controlling the user LED
 *******************************************************************************/   
-    
-    PUBLIC swapCharsAsm // Exports symbols to other modules
-                        // Making swapCharsAsm available to other modules.
-    
+
+    PUBLIC delay         // Exports symbols to other modules
+
 // Code is split into logical sections using the SECTION directive.
 // Source: http://ftp.iar.se/WWWfiles/arm/webic/doc/EWARM_AssemblerReference.ENU.pdf
 // SECTION  section  :type [:flag] [(align)]
@@ -36,17 +35,19 @@ Description     : Assembly language function for division
                         // Subsequent instructions are assembled as THUMB instructions
     
 /*******************************************************************************
-Function Name   : swapCharsAsm
-Description     : Swaps two characters (input)
-C Prototype     : int swapCharsAsm(char1, char2)
-Parameters      : R0, R1: pointer of chars
-Return value    : R0
+Function Name   : delay
+Description     : loops until input value reaches 0, then exits
+
+C Prototype     : void delay(uint8_t duration)
+                : Where duration indicates the total number of loops.
+Parameters      : R0: uint8_t duration
+Return value    : None
 *******************************************************************************/  
   
-swapCharsAsm
-    LDR R0,[R0]         // load address of char1 into R0
-    LDR R2,[R1]         // load address of char2 into R2
-    LDR R1,[R0]         // load contents of char1 into R1
-    LDR R0,[R2]         // load contents of char2 into R0
-    
+delay
+    SUB R0,R0,#1    // Subtract 1 from R0 (input argument)
+    CMP R0,#0       // Compare R0 to 0
+    BGT delay       // If greater than, branch to delay
+
+    BX  LR           // return to address in link register
     END
